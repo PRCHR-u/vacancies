@@ -1,7 +1,7 @@
 import xml.etree.ElementTree as ET
 from src.abstract_file_interaction import FileInteraction
 from contextlib import ExitStack
-from src.utils import _read_file_content, _delete_file_content, _handle_file_error
+from src.utils import (_read_file_content, _delete_file_content, _handle_file_error)
 
 
 class XMLSaver(FileInteraction):
@@ -38,18 +38,20 @@ class XMLSaver(FileInteraction):
         """
         file_content = _read_file_content(self._filename)
         if file_content is None:
-           return []
-        
+            return []
+
         try:
             root = ET.fromstring(file_content)
         except ET.ParseError as e:
-             _handle_file_error(self._filename, e, "parsing")
-             return []
+            _handle_file_error(self._filename, e, "parsing")
+            return []
         data = []
-        for vacancy_element in root.findall('vacancy'):
-            vacancy_dict = {element.tag: element.text for element in vacancy_element}
+        for vacancy_element in root.findall("vacancy"):
+            vacancy_dict = {
+                element.tag: element.text for element in vacancy_element
+                }
             data.append(vacancy_dict)
         return data
-        
+
     def delete_from_file(self) -> None:
-         _delete_file_content(self._filename)
+        _delete_file_content(self._filename)

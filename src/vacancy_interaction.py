@@ -11,6 +11,7 @@ class Vacancy:
         salary (int or str): The salary offered for the vacancy, or "N/A" if not specified.
         requirements (str): The requirements for the vacancy.
     """
+
     __slots__ = ["title", "url", "salary", "requirements"]
 
     def __init__(self, title: str, url: str, salary: str, requirements: str):
@@ -120,7 +121,7 @@ class Vacancy:
         if other.salary == "N/A":
             return True
         return int(self.salary) > int(other.salary)
-   
+
     def __eq__(self, other):
         """
         Checks if this Vacancy's salary is equal to another Vacancy's salary.
@@ -159,7 +160,8 @@ class Vacancy:
             )
             vacancies_list.append(vacancy)
         return vacancies_list
-    
+
+
 def filter_vacancies(vacancies: List["Vacancy"], filter_words: list) -> List["Vacancy"]:
     """
     Filters a list of vacancies by the given filter words.
@@ -177,7 +179,7 @@ def filter_vacancies(vacancies: List["Vacancy"], filter_words: list) -> List["Va
             filtered_vacancies.append(vacancy)
     return filtered_vacancies
 
-    
+
 def get_vacancies_by_salary(vacancies: list, salary_range: str) -> list:
     """
     Filters a list of vacancies by the specified salary range.
@@ -195,11 +197,15 @@ def get_vacancies_by_salary(vacancies: list, salary_range: str) -> list:
         salary_from, salary_to = map(int, salary_range.split("-"))
 
         for vacancy in vacancies:
-            if vacancy.salary != "N/A" and salary_from <= int(vacancy.salary) <= salary_to:
+            if (
+                vacancy.salary != "N/A"
+                and salary_from <= int(vacancy.salary) <= salary_to
+            ):
                 ranged_vacancies.append(vacancy)
     except ValueError:
-        print("Invalid salary range format.")   
+        print("Invalid salary range format.")
     return ranged_vacancies
+
 
 def sort_vacancies(vacancies):
     """
@@ -211,7 +217,9 @@ def sort_vacancies(vacancies):
     Returns:
         list: A sorted list of Vacancy objects.
     """
-    return sorted(vacancies, key=lambda x: x.salary if x.salary != "N/A" else 0, reverse=True)
+    return sorted(
+        vacancies, key=lambda x: x.salary if x.salary != "N/A" else 0, reverse=True
+    )
 
 
 def get_top_vacancies(vacancies: list, top_n: int) -> list:
@@ -231,8 +239,10 @@ def get_top_vacancies(vacancies: list, top_n: int) -> list:
 def print_vacancies(vacancies):
     """Prints the details of each vacancy in the list."""
     for vacancy in vacancies:
-        print(f"Title: {vacancy.title}\n"
-              f"URL: {vacancy.url}\n"
-              f"Salary: {vacancy.salary}\n"
-              f"Requirements: {vacancy.requirements}\n"
-              f"{'-' * 20}\n")
+        print(
+            f"Title: {vacancy.title}\n"
+            f"URL: {vacancy.url}\n"
+            f"Salary: {vacancy.salary}\n"
+            f"Requirements: {vacancy.requirements}\n"
+            f"{'-' * 20}\n"
+        )

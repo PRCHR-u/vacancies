@@ -16,11 +16,10 @@ def _delete_file_content(filename: str):
     if not os.path.exists(filename):
         raise FileNotFoundError(f"File {filename} not found.")
     try:
-        with open(filename, 'w', encoding='utf-8') as file:
+        with open(filename, "w", encoding="utf-8") as file:
             pass
     except Exception as e:
         _handle_file_error(filename, e, "deleting data")
-
 
 
 def _handle_file_error(filename: str, e: Exception, action: str):
@@ -32,7 +31,6 @@ def _handle_file_error(filename: str, e: Exception, action: str):
         e (Exception): The exception that occurred.
         action (str): A description of the action being performed (e.g., "reading", "writing").
     """
-
 
     print(f"An error occurred while {action} file")
 
@@ -53,7 +51,7 @@ def _read_file_content(filename: str) -> Optional[str]:
     """
 
     try:
-        with open(filename, 'r', encoding='utf-8') as file:
+        with open(filename, "r", encoding="utf-8") as file:
             return file.read()
     except FileNotFoundError:
         return None

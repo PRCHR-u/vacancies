@@ -1,6 +1,12 @@
 from src.api_interaction import HeadHunterAPI
 from src.file_interaction import JSONSaver
-from src.vacancy_interaction import Vacancy, filter_vacancies, get_vacancies_by_salary, sort_vacancies, get_top_vacancies
+from src.vacancy_interaction import (
+    Vacancy,
+    filter_vacancies,
+    get_vacancies_by_salary,
+    sort_vacancies,
+    get_top_vacancies,
+)
 from typing import Dict
 
 
@@ -40,7 +46,9 @@ def print_vacancies(vacancies) -> list:
     """
 
     for vacancy in vacancies:
-        print(f"{vacancy.title}, url: {vacancy.url}, salary: {vacancy.salary}, requirements: {vacancy.requirements}")
+        print(
+            f"{vacancy.title}, url: {vacancy.url}, salary: {vacancy.salary}, requirements: {vacancy.requirements}"
+        )
     return vacancies
 
 
@@ -57,14 +65,16 @@ def _save_data(saver: JSONSaver, data: list):
     existing_data = saver.read_from_file()
     new_data = []
     for vacancy in data:
-        new_data.append({
-            'title': vacancy.title,
-            'url': vacancy.url,
-            'salary': vacancy.salary,
-            'requirements': vacancy.requirements
-        })
-    existing_urls = {item['url'] for item in existing_data}
-    unique_data = [item for item in new_data if item['url'] not in existing_urls]
+        new_data.append(
+            {
+                "title": vacancy.title,
+                "url": vacancy.url,
+                "salary": vacancy.salary,
+                "requirements": vacancy.requirements,
+            }
+        )
+    existing_urls = {item["url"] for item in existing_data}
+    unique_data = [item for item in new_data if item["url"] not in existing_urls]
     existing_data.extend(unique_data)
     saver.write_to_file(existing_data)
 
@@ -94,8 +104,17 @@ def _process_vacancies(vacancies: list[Vacancy], parameters: Dict) -> list[Vacan
         A list of processed Vacancy objects.
     """
     filtered_vacancies = filter_vacancies(vacancies, parameters["filter_words"])
-    ranged_vacancies = get_vacancies_by_salary(filtered_vacancies, parameters["salary_range"])
-    top_vacancies = get_top_vacancies(ranged_vacancies, len(ranged_vacancies) if len(ranged_vacancies) < parameters["top_n"] else parameters["top_n"] )
+    ranged_vacancies = get_vacancies_by_salary(
+        filtered_vacancies, parameters["salary_range"]
+    )
+    top_vacancies = get_top_vacancies(
+        ranged_vacancies,
+        (
+            len(ranged_vacancies)
+            if len(ranged_vacancies) < parameters["top_n"]
+            else parameters["top_n"]
+        ),
+    )
     return top_vacancies
 
 
@@ -116,7 +135,7 @@ def user_interaction():
     vacancies = _get_vacancies(api, search_query)
     _save_data(JSONSaver(), vacancies)
 
-    parameters = _get_user_parameters()    
+    parameters = _get_user_parameters()
 
     top_vacancies = _process_vacancies(vacancies, parameters)
     print_vacancies(top_vacancies)

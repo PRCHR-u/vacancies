@@ -24,7 +24,6 @@ class JSONSaver(FileInteraction):
             json.dump(data, f, indent=4, ensure_ascii=False)
             print(f"Data has been written to {self._filename}")
 
-
     def read_from_file(self) -> list:
         """
         Reads data from a JSON file.

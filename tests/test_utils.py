@@ -1,8 +1,10 @@
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
-from src.utils import _delete_file_content, _read_file_content
 import pytest
 import sys
 import os
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
+from src.utils import _delete_file_content, _read_file_content
+
+
 
 def test_delete_file_content_existing_file(tmp_path):
     file_path = tmp_path / "test_file.txt"
@@ -27,13 +29,10 @@ def test_read_file_content_existing_file(tmp_path):
     assert content == "some content"
 
 
-def test_read_file_content_nonexistent_file(tmp_path, capsys):
-
-
+def test_read_file_content_nonexistent_file(tmp_path):
     file_path = tmp_path / "nonexistent_file.txt"
     content = _read_file_content(file_path)
     assert content is None
-    captured = capsys.readouterr()
     assert not file_path.exists()
 
 

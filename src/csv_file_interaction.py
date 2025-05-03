@@ -3,10 +3,12 @@ import csv
 import os
 from src.utils import _read_file_content, _delete_file_content
 
+
 class CSVSaver(FileInteraction):
     """
     A class for saving and reading data to/from a CSV file.
     """
+
     def __init__(self, filename: str = "vacancies.csv"):
         """
         Initializes CSVSaver with a filename.
@@ -16,7 +18,7 @@ class CSVSaver(FileInteraction):
 
     def write_to_file(self, data: list[dict]):
         """Writes data to a CSV file."""
-        with open(self._filename, 'w', newline='', encoding='utf-8') as csvfile:
+        with open(self._filename, "w", newline="", encoding="utf-8") as csvfile:
             if data:
                 fieldnames = data[0].keys()
                 writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
@@ -28,16 +30,16 @@ class CSVSaver(FileInteraction):
         if not os.path.exists(self._filename):
             return []
         data = []
-        with open(self._filename, 'r', newline='', encoding='utf-8') as csvfile:
+        with open(self._filename, "r", newline="", encoding="utf-8") as csvfile:
             reader = csv.DictReader(csvfile)
             for row in reader:
                 data.append(row)
         return data
-    
-    def delete_from_file(self, filename:str = ""):
+
+    def delete_from_file(self, filename: str = ""):
         """Deletes all data from the CSV file."""
         try:
-            with open(self._filename, 'w', encoding='utf-8') as file:
+            with open(self._filename, "w", encoding="utf-8") as file:
                 pass
             print(f"Data in {self._filename} has been deleted.")
         except FileNotFoundError:
