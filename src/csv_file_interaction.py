@@ -1,0 +1,40 @@
+from src.abstract_file_interaction import FileInteraction
+import csv
+from src.utils import _read_file_content, _delete_file_content
+
+import io
+
+class CSVSaver(FileInteraction):
+    def __init__(self, filename: str = "vacancies.csv"):
+        self._filename = filename
+
+    def write_to_file(self, data: list):
+        """Writes data to a CSV file."""
+        with open(self._filename, 'w', newline='', encoding='utf-8') as csvfile:
+            if data:
+                fieldnames = data[0].keys()
+                writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
+                writer.writeheader()
+                writer.writerows(data)
+
+    def read_from_file(self) -> list:
+        """Reads data from a CSV file."""
+        if not os.path.exists(self._filename):
+            return []
+        data = []
+        with open(self._filename, 'r', newline='', encoding='utf-8') as csvfile:
+            reader = csv.DictReader(csvfile)
+            for row in reader:
+                data.append(row)
+        return data
+    
+    def delete_from_file(self):
+        """Deletes all data from the CSV file."""
+        try:
+            with open(self._filename, 'w', encoding='utf-8') as file:
+                pass
+            print(f"Data in {self._filename} has been deleted.")
+        except FileNotFoundError:
+            print(f"File {self._filename} not found.")
+        except Exception as e:
+            print(f"An error occurred while deleting data: {e}")
