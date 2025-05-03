@@ -1,4 +1,5 @@
 from typing import Optional
+import os
 
 
 def _delete_file_content(filename: str):
@@ -12,12 +13,14 @@ def _delete_file_content(filename: str):
         FileNotFoundError: If the specified file does not exist.
         Exception: For any other error that occurs during file deletion.
     """
+    if not os.path.exists(filename):
+        raise FileNotFoundError(f"File {filename} not found.")
     try:
         with open(filename, 'w', encoding='utf-8') as file:
             pass
-        print(f"Data in {filename} has been deleted.")
     except Exception as e:
         _handle_file_error(filename, e, "deleting data")
+
 
 
 def _handle_file_error(filename: str, e: Exception, action: str):
@@ -29,7 +32,9 @@ def _handle_file_error(filename: str, e: Exception, action: str):
         e (Exception): The exception that occurred.
         action (str): A description of the action being performed (e.g., "reading", "writing").
     """
-    print(f"An error occurred while {action} file: {filename}. Error: {e}")
+
+
+    print(f"An error occurred while {action} file")
 
 
 def _read_file_content(filename: str) -> Optional[str]:
@@ -46,6 +51,7 @@ def _read_file_content(filename: str) -> Optional[str]:
     Raises:
         Exception: If any error occurs during the file reading process.
     """
+
     try:
         with open(filename, 'r', encoding='utf-8') as file:
             return file.read()

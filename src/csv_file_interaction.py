@@ -1,14 +1,20 @@
 from src.abstract_file_interaction import FileInteraction
 import csv
+import os
 from src.utils import _read_file_content, _delete_file_content
 
-import io
-
 class CSVSaver(FileInteraction):
+    """
+    A class for saving and reading data to/from a CSV file.
+    """
     def __init__(self, filename: str = "vacancies.csv"):
+        """
+        Initializes CSVSaver with a filename.
+        Args:
+            filename: name of the csv file to save data to."""
         self._filename = filename
 
-    def write_to_file(self, data: list):
+    def write_to_file(self, data: list[dict]):
         """Writes data to a CSV file."""
         with open(self._filename, 'w', newline='', encoding='utf-8') as csvfile:
             if data:
@@ -28,7 +34,7 @@ class CSVSaver(FileInteraction):
                 data.append(row)
         return data
     
-    def delete_from_file(self):
+    def delete_from_file(self, filename:str = ""):
         """Deletes all data from the CSV file."""
         try:
             with open(self._filename, 'w', encoding='utf-8') as file:

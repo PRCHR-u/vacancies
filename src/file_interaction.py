@@ -13,12 +13,25 @@ class JSONSaver(FileInteraction):
     def write_to_file(self, data: list) -> None:
         """
         Writes data to a JSON file.
+
+        Args:
+            data: A list of dictionaries to be written to the file.
+        """
+        """
+        Writes data to a JSON file.
         """
         with open(self._filename, "w", encoding="utf-8") as f:
             json.dump(data, f, indent=4, ensure_ascii=False)
             print(f"Data has been written to {self._filename}")
 
+
     def read_from_file(self) -> list:
+        """
+        Reads data from a JSON file.
+
+        Returns:
+            A list of dictionaries read from the file.
+        """
         """
         Reads data from a JSON file.
         """
