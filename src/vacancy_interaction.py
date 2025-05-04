@@ -40,10 +40,10 @@ class Vacancy:
         self.url = self._validate_string(url, "URL")
         if salary != "N/A":
             try:
-                self.salary = int(salary)                
-            except ValueError as e:
-                raise ValueError(                    
-                    f"Salary must be an integer or 'N/A'. {e}"
+                self.salary = int(salary)
+            except ValueError as error:
+                raise ValueError(
+                    f"Salary must be an integer or 'N/A'. {error}"
                 )
         else:
             self.salary = salary
@@ -79,7 +79,8 @@ class Vacancy:
         Raises:
             TypeError: If the other object is not a Vacancy.
         """
-        if not isinstance(other, Vacancy):            raise TypeError("Can only compare Vacancy objects.")
+        if not isinstance(other, Vacancy):
+            raise TypeError("Can only compare Vacancy objects.")
 
         if self.salary == "N/A":
             return True
@@ -99,7 +100,9 @@ class Vacancy:
         Raises:
             TypeError: If the other object is not a Vacancy.
         """
-        if not isinstance(other, Vacancy):            raise TypeError("Can only compare Vacancy objects.")
+        if not isinstance(other, Vacancy):
+            raise TypeError("Can only compare Vacancy objects.")
+
         if self.salary == "N/A":
             return True
         if other.salary == "N/A":
@@ -118,13 +121,13 @@ class Vacancy:
         Raises:
             TypeError: If the other object is not a Vacancy.
         """
-        if not isinstance(other, Vacancy):            raise TypeError("Can only compare Vacancy objects.")
+        if not isinstance(other, Vacancy):
+            raise TypeError("Can only compare Vacancy objects.")
+        
         if self.salary == "N/A":
             return False
-        
-
-        if other.salary == "N/A":
-            return True        
+        if other.salary == "N/A":            
+            return True
         return int(self.salary) > int(other.salary)
 
     def __eq__(self, other):
@@ -138,9 +141,9 @@ class Vacancy:
         Raises:
             TypeError: If the other object is not a Vacancy.
         """
-        if not isinstance(other, Vacancy):            raise TypeError("Can only compare Vacancy objects.")
-
-        return self.salary == other.salary        
+        if not isinstance(other, Vacancy):
+            raise TypeError("Can only compare Vacancy objects.")
+        return self.salary == other.salary
 
     @staticmethod
     def cast_to_object_list(vacancies_json: List[dict]) -> List["Vacancy"]:
@@ -156,10 +159,11 @@ class Vacancy:
         """
         vacancies_list = []
         for item in vacancies_json:
-            vacancy = Vacancy(
+            vacancy = Vacancy(                
                 title=item.get("name", "N/A"),
                 url=item.get("alternate_url", "N/A"),
                 salary=item.get("salary", {}).get("from", "N/A"),
+
                 requirements=item.get("snippet", {}).get("requirement", "N/A")
             )
             vacancies_list.append(vacancy)
@@ -186,41 +190,41 @@ def filter_vacancies(vacancies: List["Vacancy"], filter_words: list) -> List["Va
 
 def get_vacancies_by_salary(vacancies: list, salary_range: str) -> list:
     """
-    Filters a list of vacancies by the specified salary range.
+    Filters a list of vacancies by the specified salary range.    
+
     Args:
         vacancies: A list of Vacancy objects.
-        salary_range: A string representing the salary range in the
-        format "min-max".
+        salary_range: A string representing the salary range in the format
+        "min-max".
+
     Returns:
-        list: A filtered list of Vacancy
-        objects within the specified salary range.
+        list: A filtered list of Vacancy objects within the specified
+        salary range.
     """
     ranged_vacancies = []
     try:
         salary_from, salary_to = map(int, salary_range.split("-"))
         for vacancy in vacancies:
-            if (
-                vacancy.salary != "N/A"
-                and salary_from <= int(vacancy.salary) <= salary_to):
+            if vacancy.salary != "N/A" and (
+                salary_from <= int(vacancy.salary) <= salary_to
+            ):
                 ranged_vacancies.append(vacancy)
     except ValueError:
         print("Invalid salary range format.")
     return ranged_vacancies
 
-
 def sort_vacancies(vacancies):
     """
     Sorts a list of vacancies by salary in descending order.
-
     Args:
         vacancies (list): A list of Vacancy objects.
-    Returns:
-        list: A sorted list of Vacancy objects.
-
+    Returns: list: A sorted list of Vacancy objects.
     """
-    return sorted(
-        vacancies, key=lambda x: x.salary if x.salary != "N/A" else 0,
-        reverse=True
+    return sorted(        
+        vacancies,
+        key=lambda x: x.salary if x.salary != "N/A" else 0,
+        reverse=True,        
+        
     )
 
 def get_top_vacancies(vacancies: list, top_n: int) -> list:
@@ -242,8 +246,9 @@ def print_vacancies(vacancies):
     for vacancy in vacancies:
         print(
               f"Title: {vacancy.title}\n"
-              f"URL: {vacancy.url}\n"              
-              f"Salary: {vacancy.salary}\n"              
+              f"URL: {vacancy.url}\n"
+              f"Salary: {vacancy.salary}\n"
               f"Requirements: {vacancy.requirements}\n"
               f"{'-' * 20}\n"
             )
+

@@ -1,7 +1,5 @@
-.idx
+.idx/
 __pycache__/
-.venv
-.pytest_cache/
-tests/__pycache__/
-dev.nix
+.venv/
 dev-requirements.txt
+dev.nix
