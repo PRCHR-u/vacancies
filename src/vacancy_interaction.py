@@ -34,7 +34,8 @@ class Vacancy:
             requirements (str): The requirements for the vacancy.
 
         Raises:
-            ValueError: If title is empty, URL is empty, or salary is not an integer or "N/A".
+            ValueError: If title is empty,
+            URL is empty, or salary is not an integer or "N/A".
         """
         self.title = self._validate_string(title, "Title")
         self.url = self._validate_string(url, "URL")
@@ -69,13 +70,15 @@ class Vacancy:
 
     def __le__(self, other: "Vacancy") -> bool:
         """
-        Checks if this Vacancy's salary is less than or equal to another Vacancy's salary.
+        Checks if this Vacancy's salary is
+        less than or equal to another Vacancy's salary.
 
         Args:
             other (Vacancy): The other Vacancy object to compare with.
 
         Returns:
-            bool: True if this Vacancy's salary is less than or equal to the other's, False otherwise.
+            bool: True if this Vacancy's salary is
+            less than or equal to the other's, False otherwise.
         Raises:
             TypeError: If the other object is not a Vacancy.
         """
@@ -96,7 +99,8 @@ class Vacancy:
             other (Vacancy): The other Vacancy object to compare with.
 
         Returns:
-            bool: True if this Vacancy's salary is less than the other's, False otherwise.
+            bool: True if this Vacancy's salary
+            is less than the other's, False otherwise.
         Raises:
             TypeError: If the other object is not a Vacancy.
         """
@@ -111,22 +115,24 @@ class Vacancy:
 
     def __gt__(self, other: "Vacancy") -> bool:
         """
-        Checks if this Vacancy's salary is greater than another Vacancy's salary.
+        Checks if this Vacancy's salary is
+        greater than another Vacancy's salary.
 
         Args:
             other (Vacancy): The other Vacancy object to compare with.
 
         Returns:
-            bool: True if this Vacancy's salary is greater than the other's, False otherwise.
+            bool: True if this Vacancy's salary is
+            greater than the other's, False otherwise.
         Raises:
             TypeError: If the other object is not a Vacancy.
         """
         if not isinstance(other, Vacancy):
             raise TypeError("Can only compare Vacancy objects.")
-        
+
         if self.salary == "N/A":
             return False
-        if other.salary == "N/A":            
+        if other.salary == "N/A":
             return True
         return int(self.salary) > int(other.salary)
 
@@ -159,7 +165,7 @@ class Vacancy:
         """
         vacancies_list = []
         for item in vacancies_json:
-            vacancy = Vacancy(                
+            vacancy = Vacancy(
                 title=item.get("name", "N/A"),
                 url=item.get("alternate_url", "N/A"),
                 salary=item.get("salary", {}).get("from", "N/A"),
@@ -170,7 +176,9 @@ class Vacancy:
         return vacancies_list
 
 
-def filter_vacancies(vacancies: List["Vacancy"], filter_words: list) -> List["Vacancy"]:
+def filter_vacancies(
+        vacancies: List["Vacancy"], filter_words: list
+) -> List["Vacancy"]:
     """
     Filters a list of vacancies by the given filter words.
 
@@ -190,7 +198,7 @@ def filter_vacancies(vacancies: List["Vacancy"], filter_words: list) -> List["Va
 
 def get_vacancies_by_salary(vacancies: list, salary_range: str) -> list:
     """
-    Filters a list of vacancies by the specified salary range.    
+    Filters a list of vacancies by the specified salary range.
 
     Args:
         vacancies: A list of Vacancy objects.
@@ -213,6 +221,7 @@ def get_vacancies_by_salary(vacancies: list, salary_range: str) -> list:
         print("Invalid salary range format.")
     return ranged_vacancies
 
+
 def sort_vacancies(vacancies):
     """
     Sorts a list of vacancies by salary in descending order.
@@ -220,12 +229,13 @@ def sort_vacancies(vacancies):
         vacancies (list): A list of Vacancy objects.
     Returns: list: A sorted list of Vacancy objects.
     """
-    return sorted(        
+    return sorted(
         vacancies,
         key=lambda x: x.salary if x.salary != "N/A" else 0,
-        reverse=True,        
-        
+        reverse=True,
+
     )
+
 
 def get_top_vacancies(vacancies: list, top_n: int) -> list:
     """
@@ -251,4 +261,3 @@ def print_vacancies(vacancies):
               f"Requirements: {vacancy.requirements}\n"
               f"{'-' * 20}\n"
             )
-
