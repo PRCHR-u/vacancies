@@ -1,1 +1,2 @@
 requests
+pkgs.python312Packages.pytest
