@@ -1,10 +1,16 @@
+import sys
+import os
+
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
+
 import pytest
 from src.vacancy_interaction import (
     Vacancy,
     filter_vacancies,
     get_vacancies_by_salary,
     sort_vacancies,
-    get_top_vacancies
+    get_top_vacancies,
+
 )
 
 

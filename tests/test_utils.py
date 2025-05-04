@@ -1,9 +1,8 @@
-import pytest
 import sys
 import os
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
+import pytest
 from src.utils import _delete_file_content, _read_file_content
-
 
 
 def test_delete_file_content_existing_file(tmp_path):

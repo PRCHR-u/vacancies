@@ -3,11 +3,9 @@ import sys
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
-import pytest
 from unittest.mock import mock_open, patch
 import csv
 import xml.etree.ElementTree as ET
-
 from src.file_interaction import JSONSaver
 from src.xml_file_interaction import XMLSaver
 from src.csv_file_interaction import CSVSaver
@@ -28,7 +26,7 @@ class TestJSONSaver:
 
     @patch(
         "builtins.open", new_callable=mock_open, read_data='[{"key": "value"}]'
-        )
+    )
     def test_read_from_file(self, mock_file):
         saver = JSONSaver(filename="test.json")
         result = saver.read_from_file()
@@ -99,7 +97,7 @@ class TestCSVSaver:
 
         mock_file.assert_called_once_with(
             "test.csv", "w", newline="", encoding="utf-8"
-            )
+        )
         mock_writeheader.assert_called_once()
         mock_writerows.assert_called_once_with(data)
 
@@ -107,7 +105,8 @@ class TestCSVSaver:
     @patch("csv.DictReader")
     @patch("os.path.exists", return_value=True)
     def test_read_from_file(
-        self, mock_path_exists, mock_csv_reader, mock_file):
+        self, mock_path_exists, mock_csv_reader, mock_file
+    ):
 
         mock_csv_reader.return_value = [{"key": "value"}]
 
@@ -116,7 +115,7 @@ class TestCSVSaver:
 
         mock_file.assert_called_once_with(
             "test.csv", "r", newline="", encoding="utf-8"
-            )
+        )
         assert result == [{"key": "value"}]
 
     @patch("os.path.exists", return_value=False)

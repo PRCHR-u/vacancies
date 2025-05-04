@@ -1,9 +1,12 @@
 import sys
 import os
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
+import sys
+import os
 
 
-import pytest
 from unittest.mock import Mock, patch
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), ".")))
 
 from main import (
     _get_vacancies,
@@ -16,7 +19,6 @@ from src.file_interaction import JSONSaver
 from src.api_interaction import HeadHunterAPI
 from src.vacancy_interaction import Vacancy
 
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 MOCK_RESPONSE = [
     {
         "name": "Vacancy 1",

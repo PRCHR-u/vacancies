@@ -1,7 +1,10 @@
 import xml.etree.ElementTree as ET
 from src.abstract_file_interaction import FileInteraction
-from contextlib import ExitStack
-from src.utils import (_read_file_content, _delete_file_content, _handle_file_error)
+from src.utils import (
+    _read_file_content,
+    _delete_file_content,
+    _handle_file_error
+    )
 
 
 class XMLSaver(FileInteraction):
