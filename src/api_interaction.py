@@ -1,3 +1,4 @@
+import requests
 from src.abstract_api import APIInteraction
 
 
@@ -21,21 +22,19 @@ class HeadHunterAPI(APIInteraction):
 
     def get_vacancies(self, search_query: str) -> list[dict]:
         """
-        Creates a mock response for the get_vacancies method.
+        Fetches vacancies from the HeadHunter API.
         """
-        mock_response = [
-            {
-                "name": "Vacancy 1",
-                "alternate_url": "https://example.com/vacancy1",
-                "salary": {"from": 1000},
-                "snippet": {"requirement": "Requirement 1"},
-            },
-            {
-                "name": "Vacancy 2",
-                "alternate_url": "https://example.com/vacancy2",
-                "salary": {"from": 2000},
-                "snippet": {"requirement": "Requirement 2"},
-            },
-        ]
-
-        return mock_response
+        params = {
+            "text": search_query,
+            "page": 0,
+            "per_page": 100,
+            "only_with_salary": True
+            }
+        response = requests.get(self.__base_url, params=params)
+        if response.status_code == 200:
+            return response.json()["items"]
+        else:
+            print(
+                f"Error fetching vacancies: Status code {response.status_code}"
+            )
+            return []

@@ -17,12 +17,16 @@ class JSONSaver(FileInteraction):
         Args:
             data: A list of dictionaries to be written to the file.
         """
-        """
-        Writes data to a JSON file.
-        """
-        with open(self._filename, "w", encoding="utf-8") as f:
-            json.dump(data, f, indent=4, ensure_ascii=False)
-            print(f"Data has been written to {self._filename}")
+        existing_data = self.read_from_file()
+        unique_data = existing_data[:]  # Start with existing data
+
+        for item in data:
+            if item not in unique_data:
+                unique_data.append(item)
+
+        with open(self._filename, "w", encoding="utf-8") as file:
+            json.dump(unique_data, file, indent=4, ensure_ascii=False)
+        print(f"Data has been written to {self._filename}")
 
     def read_from_file(self) -> list:
         """
@@ -31,10 +35,7 @@ class JSONSaver(FileInteraction):
         Returns:
             A list of dictionaries read from the file.
         """
-        """
-        Reads data from a JSON file.
-        """
         content = _read_file_content(self._filename)
-        if content is not None:
+        if content:
             return json.loads(content)
         return []

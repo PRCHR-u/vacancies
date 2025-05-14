@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Any
 
 
 class Vacancy:
@@ -20,7 +20,7 @@ class Vacancy:
 
     __slots__ = ["title", "url", "salary", "requirements"]
 
-    def __init__(self, title: str, url: str, salary: str, requirements: str):
+    def __init__(self, title: str, url: str, salary: Any, requirements: str):
         """Initializes a Vacancy object.
         Initializes a Vacancy object.
 
@@ -36,18 +36,10 @@ class Vacancy:
         Raises:
             ValueError: If title is empty,
             URL is empty, or salary is not an integer or "N/A".
-        """
+ """
         self.title = self._validate_string(title, "Title")
         self.url = self._validate_string(url, "URL")
-        if salary != "N/A":
-            try:
-                self.salary = int(salary)
-            except ValueError as error:
-                raise ValueError(
-                    f"Salary must be an integer or 'N/A'. {error}"
-                )
-        else:
-            self.salary = salary
+        self.salary = self._validate_salary(salary)
         self.requirements = requirements
 
     def _validate_string(self, value: str, field_name: str) -> str:
@@ -68,6 +60,18 @@ class Vacancy:
             raise ValueError(f"{field_name} must be a non-empty string.")
         return value
 
+    def _validate_salary(self, salary: Any) -> int:
+        """
+        Validates and converts the salary to an integer.
+        Returns 0 if salary is "N/A" or None.
+        """
+        if salary == "N/A" or salary is None:
+            return 0
+        try:
+            return int(salary)
+        except ValueError:
+            return 0
+
     def __le__(self, other: "Vacancy") -> bool:
         """
         Checks if this Vacancy's salary is
@@ -85,11 +89,7 @@ class Vacancy:
         if not isinstance(other, Vacancy):
             raise TypeError("Can only compare Vacancy objects.")
 
-        if self.salary == "N/A":
-            return True
-        if other.salary == "N/A":
-            return False
-        return int(self.salary) <= int(other.salary)
+        return self.salary <= other.salary
 
     def __lt__(self, other: "Vacancy") -> bool:
         """
@@ -107,11 +107,7 @@ class Vacancy:
         if not isinstance(other, Vacancy):
             raise TypeError("Can only compare Vacancy objects.")
 
-        if self.salary == "N/A":
-            return True
-        if other.salary == "N/A":
-            return False
-        return int(self.salary) < int(other.salary)
+        return self.salary < other.salary
 
     def __gt__(self, other: "Vacancy") -> bool:
         """
@@ -130,11 +126,7 @@ class Vacancy:
         if not isinstance(other, Vacancy):
             raise TypeError("Can only compare Vacancy objects.")
 
-        if self.salary == "N/A":
-            return False
-        if other.salary == "N/A":
-            return True
-        return int(self.salary) > int(other.salary)
+        return self.salary > other.salary
 
     def __eq__(self, other):
         """
@@ -169,7 +161,6 @@ class Vacancy:
                 title=item.get("name", "N/A"),
                 url=item.get("alternate_url", "N/A"),
                 salary=item.get("salary", {}).get("from", "N/A"),
-
                 requirements=item.get("snippet", {}).get("requirement", "N/A")
             )
             vacancies_list.append(vacancy)
@@ -213,9 +204,7 @@ def get_vacancies_by_salary(vacancies: list, salary_range: str) -> list:
     try:
         salary_from, salary_to = map(int, salary_range.split("-"))
         for vacancy in vacancies:
-            if vacancy.salary != "N/A" and (
-                salary_from <= int(vacancy.salary) <= salary_to
-            ):
+            if salary_from <= vacancy.salary <= salary_to:
                 ranged_vacancies.append(vacancy)
     except ValueError:
         print("Invalid salary range format.")
@@ -231,7 +220,7 @@ def sort_vacancies(vacancies):
     """
     return sorted(
         vacancies,
-        key=lambda x: x.salary if x.salary != "N/A" else 0,
+        key=lambda x: x.salary,
         reverse=True,
 
     )
